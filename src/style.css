@@ -1,42 +1,24 @@
-.navbar {
-    font-size: 20px;
+*{
+    margin: 0;
+    padding: 0;
+}
+.Header{
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    padding: 10px 20px;
-    background-color: #a1d0ff; 
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid black;
+    padding: 20px;
 }
 
-.navbar-logo {
-    font-size: 20px;
-    font-weight: bold;
-}
-
-.navbar-links { 
+.logo{
     display: flex;
-    list-style: none;
-    gap: 20px;
+    padding: 10px;
+    column-gap: 10px;
 }
 
-.navbar-links li {
-    cursor: pointer;
-}
-
-.navbar-search input {
-    background-color: #d6feff;
-    border: 1px solid #ccc;
-    padding: 8px 30px;
-    font-size: 15px;
-    border-radius: 4px;
-}
-
-.navbar-actions {
-    display: flex;
-    list-style: none;
-    gap: 20px;
-}
-
-.navbar-actions li {
-    cursor: pointer;
+.NavBar{
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    align-items: center;
+    font-size: 25px;
+    padding: 10px;
 }

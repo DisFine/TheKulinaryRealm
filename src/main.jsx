@@ -1,10 +1,11 @@
 import React from 'react'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import Index from './FrontEnd'
-
+import HomePage from './FrontEnd/HomePage'
+import Header from './FrontEnd/header'
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <Index />
+    <Header />
+    <HomePage />
   </StrictMode>,
 )
