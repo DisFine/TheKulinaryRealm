@@ -22,4 +22,5 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-/BackEnd/
+/src/BackEnd/*
+!/src/BackEnd/.gitkeep
