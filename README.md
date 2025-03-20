@@ -32,5 +32,5 @@ _NaN_
 
 ### Clone the Repository  
 ```sh
-git clone https://github.com/yourusername/TheKulinaryRealm.git
+git clone https://github.com/DisFine/TheKulinaryRealm.git
 cd TheKulinaryRealm
