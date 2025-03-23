@@ -16,11 +16,9 @@ function Header() {
             <h1>TheKulinaryRealm</h1>
         </div>
         <div className="NavBar">
-            <div className="n1">Home</div>
-            <div className="n2">Recipe</div>
-            <div className="n3">How-Tos</div>
-            <div className="n4">Equipment</div>
-            <div className="n5">About Us</div>
+            <a className="n1" href='#' >Home</a>
+            <a className="n2" href='#'>Recipe</a>
+            <a className="n5" href='#'>About Us</a>
         </div>
         <div className="Search">
             <div className="search-container">

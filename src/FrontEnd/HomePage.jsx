@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../style.css';
-
+import PerfectScrollbar from 'perfect-scrollbar';
 
 function HomePage() {
   const [recipes, setRecipes] = useState([]);
@@ -91,7 +91,7 @@ function HomePage() {
           </div>
           <div className="modal-body">
             <img
-              src={recipe.image || 'https://via.placeholder.com/300x200?text=No+Image'}
+              src={recipe.image}
               alt={recipe.name}
               className="modal-image"
             />
