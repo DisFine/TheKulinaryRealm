@@ -8,6 +8,18 @@ function HomePage() {
   const [loading, setLoading] = useState(true);
   const [favorites, setFavorites] = useState([]);
   const [activeTab, setActiveTab] = useState('all');
+  const [selectedRecipe, setSelectedRecipe] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+
+  const handleViewRecipe = (recipe) => {
+    setSelectedRecipe(recipe);
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+    setSelectedRecipe(null);
+  };
 
   useEffect(() => {
     fetchRecipes();
@@ -37,9 +49,9 @@ function HomePage() {
     setSearchTerm(e.target.value);
   };
 
-  const filteredRecipes = recipes.filter(recipe => 
+  const filteredRecipes = recipes.filter(recipe =>
     recipe.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (recipe.ingredients && recipe.ingredients.some(ingredient => 
+    (recipe.ingredients && recipe.ingredients.some(ingredient =>
       ingredient.toLowerCase().includes(searchTerm.toLowerCase())
     ))
   );
@@ -48,14 +60,87 @@ function HomePage() {
     const newFavorites = favorites.includes(recipeId)
       ? favorites.filter(id => id !== recipeId)
       : [...favorites, recipeId];
-    
+
     setFavorites(newFavorites);
     localStorage.setItem('favorites', JSON.stringify(newFavorites));
   };
 
-  const displayRecipes = activeTab === 'favorites' 
+  const displayRecipes = activeTab === 'favorites'
     ? filteredRecipes.filter(recipe => favorites.includes(recipe.id))
     : filteredRecipes;
+
+  const RecipeModal = ({ recipe, onClose }) => {
+    if (!recipe) return null;
+
+    const formatDate = (dateString) => {
+      const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+      return new Date(dateString).toLocaleDateString(undefined, options);
+    };
+
+    return (
+      <div className="modal-overlay" onClick={onClose}>
+        <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+          <button className="modal-close-button" onClick={onClose}>×</button>
+          <div className="modal-header">
+            <h2>{recipe.name}</h2>
+            <div className="recipe-meta">
+              <span>⏱️ Prep: {recipe.prep_time} mins</span>
+              <span>⏲️ Cook: {recipe.cook_time} mins</span>
+              <span>👥 Serves: {recipe.serving_min}-{recipe.serving_max}</span>
+            </div>
+          </div>
+          <div className="modal-body">
+            <img
+              src={recipe.image || 'https://via.placeholder.com/300x200?text=No+Image'}
+              alt={recipe.name}
+              className="modal-image"
+            />
+            <div className="recipe-description">{recipe.description}</div>
+
+            <h2>Ingredients</h2>
+            <ul className="ingredients-list">
+              {recipe.ingredients ? (
+                typeof recipe.ingredients === 'string' ?
+                  recipe.ingredients.split(',').map((step, index) => (
+                    <li key={index}>{step.trim()}</li>
+                  ))
+                  : Array.isArray(recipe.ingredients) ?
+                    recipe.ingredients.map((step, index) => (
+                      <li key={index}>{step}</li>
+                    ))
+                    : <li>{recipe.ingredients}</li>
+              ) : (
+                <li>No ingredients available</li>
+              )}
+            </ul>
+
+            <h2>Instructions</h2>
+            <ol className="instructions-list">
+              {recipe.instructions ? (
+                typeof recipe.instructions === 'string' ?
+                  recipe.instructions.split(',').map((step, index) => (
+                    <li key={index}>{step.trim()}</li>
+                  ))
+                  : Array.isArray(recipe.instructions) ?
+                    recipe.instructions.map((step, index) => (
+                      <li key={index}>{step}</li>
+                    ))
+                    : <li>{recipe.instructions}</li>
+              ) : (
+                <li>No instructions available</li>
+              )}
+            </ol>
+
+
+            <div className="recipe-footer">
+              <p>Created on: {formatDate(recipe.created_at)}</p>
+              <p>Chef ID: {recipe.chef_id}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
 
   return (
     <div className="container">
@@ -75,13 +160,13 @@ function HomePage() {
       </div>
 
       <div className="tabs">
-        <button 
+        <button
           className={`tab ${activeTab === 'all' ? 'active' : ''}`}
           onClick={() => setActiveTab('all')}
         >
           All Recipes
         </button>
-        <button 
+        <button
           className={`tab ${activeTab === 'favorites' ? 'active' : ''}`}
           onClick={() => setActiveTab('favorites')}
         >
@@ -101,7 +186,7 @@ function HomePage() {
               <div key={recipe.id} className="recipe-card">
                 <div className="recipe-image-container">
                   <img src={recipe.image || 'https://via.placeholder.com/300x200?text=No+Image'} alt={recipe.name} className="recipe-image" />
-                  <button 
+                  <button
                     className={`favorite-button ${favorites.includes(recipe.id) ? 'favorited' : ''}`}
                     onClick={() => toggleFavorite(recipe.id)}
                   >
@@ -115,7 +200,13 @@ function HomePage() {
                     <span>⏲️ {recipe.prep_time || 0} mins</span>
                   </div>
                   <p className="recipe-description">{recipe.description}</p>
-                  <button className="view-recipe-button">View Recipe</button>
+                  <button
+                    className="view-recipe-button"
+                    onClick={() => handleViewRecipe(recipe)}
+                  >
+                    View Recipe
+                  </button>
+
                 </div>
               </div>
             ))
@@ -138,6 +229,8 @@ function HomePage() {
           <button className="category-button">Quick Meals</button>
         </div>
       </div>
+
+      {showModal && <RecipeModal recipe={selectedRecipe} onClose={closeModal} />}
 
       <footer className="footer">
         <p>© {new Date().getFullYear()} Recipe Finder App. All rights reserved.</p>
