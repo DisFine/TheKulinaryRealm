@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../style.css';
 
+
 function HomePage() {
   const [recipes, setRecipes] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -9,9 +10,7 @@ function HomePage() {
   const [activeTab, setActiveTab] = useState('all');
 
   useEffect(() => {
-    // Fetch recipes when component mounts
     fetchRecipes();
-    // Load favorites from localStorage
     const savedFavorites = localStorage.getItem('favorites');
     if (savedFavorites) {
       setFavorites(JSON.parse(savedFavorites));
@@ -21,7 +20,6 @@ function HomePage() {
   const fetchRecipes = async () => {
     setLoading(true);
     try {
-      // Connect to your Express backend that interfaces with PostgreSQL
       const response = await fetch('http://localhost:3000/api/recipes');
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);

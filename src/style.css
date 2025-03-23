@@ -18,11 +18,12 @@
 
 .NavBar {
     display: grid;
-    grid-template-columns: repeat(8, 1fr);
-    font-size: 25px;
+    grid-template-columns: repeat(5, 1fr);
+    font-size: 20px;
     padding: 10px;
-    align-items: center;
     justify-items: center;
+    align-items: center;
+    column-gap: 20px;
 }
 
 .Container {
@@ -330,4 +331,10 @@
     .category-button {
         width: 80%;
     }
+}
+
+.search-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
 }
